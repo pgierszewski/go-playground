@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  auth:
+    env_file:
+      - ./auth/.env
+    build:
+      context: .
+      dockerfile: auth/docker/Dockerfile
+    volumes:
+      - ./auth:/app/auth
+    depends_on:
+      - postgres
+    ports:
+      - 8081:8081
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PASSWORD: password123
+    volumes:
+      - postgres-vol:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  # redis:
+  #   image: redis:latest
+
+
+volumes:
+  postgres-vol:
